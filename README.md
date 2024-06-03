@@ -17,8 +17,9 @@ game.start()
 ```
 
 ### Cartas
-1 de Oro:
-```python
+
+```bash
+ 1 de Oro
 o-------o
 |01   🥇|
 |  ORO  |
