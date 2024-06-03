@@ -11,6 +11,14 @@ pip install JMTrucoCmd
 
 ## Uso
 ```python
+from JMTrucoCmd import Game
+game = Game()
+game.start()
+```
+
+### Cartas
+```python
+from JMTrucoCmd import Game
 game = Game()
 game.start()
 ```
