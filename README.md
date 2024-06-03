@@ -19,10 +19,10 @@ game.start()
 ### Cartas
 
 
+````plaintext
  1 de Oro
 o-------o
 |01   🥇|
 |  ORO  |
 |🥇   01|
 o-------o
-
