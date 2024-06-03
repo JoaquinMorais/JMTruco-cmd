@@ -1,1 +1,7 @@
-**/__pycache__/
+# Python-specific ignores
+__pycache__/
+dist/
+JMTrucoCmd.egg-info/
+
+# Other ignores
+.pypirc
