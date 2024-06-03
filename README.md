@@ -17,8 +17,11 @@ game.start()
 ```
 
 ### Cartas
+1 de Oro:
 ```python
-from JMTrucoCmd import Game
-game = Game()
-game.start()
+o-------o
+|01   🥇|
+|  ORO  |
+|🥇   01|
+o-------o
 ```
