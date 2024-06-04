@@ -1,1 +1,1 @@
-from JMTrucoCmd.truco import Truco
+from JMTrucoCmd.models.game import Game

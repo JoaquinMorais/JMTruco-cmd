@@ -6,3 +6,4 @@ JMTrucoCmd.egg-info/
 
 # Other ignores
 .pypirc
+main.py
