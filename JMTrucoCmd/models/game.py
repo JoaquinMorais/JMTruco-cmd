@@ -49,7 +49,7 @@ class Game():
 
     def start(self):
         cls()
-        self.bot = Bot(BotInit(name='fercho'))
+        self.bot = Bot(BotInit(name='robocop'))
         if randint(0,1) == 0:
             self.start_pc = False
         else:

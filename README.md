@@ -15,3 +15,9 @@ from JMTrucoCmd import Game
 game = Game()
 game.start()
 ```
+
+## Autor
+Joaquin Morais
+
+## Licencia
+Copyright (c) 2024 Joaquin Morais
