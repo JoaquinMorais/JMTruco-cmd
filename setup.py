@@ -1,11 +1,11 @@
-from setuptools import setup
+import setuptools
 
 readme = open("./README.md","r")
 
-setup(
+setuptools.setup(
     name='JMTrucoCmd',
-    packages=['JMTrucoCmd'], # Mismo nombre que en la estructura de carpetas de arriba
-    version='0.5',
+    packages=['JMTrucoCmd','JMTrucoCmd.models','JMTrucoCmd.schemas','JMTrucoCmd.functions'], # Mismo nombre que en la estructura de carpetas de arriba
+    version='0.5.4.4',
     license='MIT', # La licencia que tenga tu paquete
     description='Esta es la descripcion del truco',
     long_description=readme.read(),
@@ -20,5 +20,9 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent"
     ],
-    python_requires=">=3.6"
+    python_requires=">=3.6",
+    install_requires=[
+        'pydantic','typing'
+    ]
+
 )
