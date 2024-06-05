@@ -16,7 +16,7 @@ class Bot():
                 liar=bot_init.liar or randint(1,10),
                 fisherman=bot_init.fisherman or randint(1,10),
                 score_truco=bot_init.score_truco or randint(8,9),
-                score_envido=bot_init.score_envido or randint(21,27)
+                score_envido=bot_init.score_envido or randint(23,27)
             )
         )
     def __str__(self) -> str:
@@ -28,7 +28,6 @@ class Bot():
         
         if round == 1:
             if envido==1:
-                return None, 2, None
                 call_envido = self.probabily_call_envido(cards)
                 if call_envido is not 0:
                     return None, call_envido, None

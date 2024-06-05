@@ -44,8 +44,11 @@ class Game():
             3: 'Real Envido',
             4: 'Falta Envido'
         }
-        
-
+        self.envido_option_points = {
+            2: 2,
+            3: 3,
+            4: 0
+        }
 
     def start(self):
         cls()
@@ -56,10 +59,17 @@ class Game():
             self.start_pc = True
         print(self.bot)
         self.score = [0,0]
-        #cls()
+
         print('Empieza la partida de truco')
+        
+        win_match = False
+        while not win_match:
+            self.print_score()
+            self.start_round()
+            self.start_pc = not self.start_pc
+            win_match,winner = self.win_match()
         self.print_score()
-        self.start_round()
+        print(f'{winner} gano!!!!')
 
     def start_round(self):
         self.actual_score:list[int] = [0,0] #0:gamer, 1:computer
@@ -80,13 +90,8 @@ class Game():
             calculate_envido(self.cards[0]),
             calculate_envido(self.cards[1]),
         ]
-        self.envido_option_points = {
-            2: 2,
-            3: 3,
-            4: 0
-        }
-
         self.play_pc = self.start_pc
+        self.quiero_pc = None
         self.win_pc = None
         while not self.end_round:
             round = min(len(self.cards_played['pc']),len(self.cards_played['player']))+1
@@ -119,23 +124,17 @@ class Game():
                     self.respond_truco(bot_call=True)
                     sleep(self.time*2.5)
             else:
-                sleep(self.time)
                 self.play_player()
             
             response = self.check_round(round)
-            
-            
         cls()
         self.print_played_cards()
         print_slow(response.upper())
         sleep(self.time)
-        cls()
-        print(f'winner:{self.win_pc}, truco:{self.truco}')
         if self.win_pc is False:
             self.actual_score[0] += self.truco
         elif self.win_pc is True:
             self.actual_score[1] += self.truco
-        self.print_score()
 
     def play_player(self, only_cards = False):
         player_cards = self.cards[0]
@@ -392,8 +391,6 @@ class Game():
     
 
     #responses
-    
-
     def check_round(self,round):
         win_rounds,none = calculate_win(self.cards_played)
         response = ''
@@ -437,7 +434,16 @@ class Game():
             self.win_pc = True
             response = pc_text  
         return response
-
+    
+    def win_match(self):
+        print(self.score)
+        print(self.objective)
+        sleep(self.time*5)
+        if self.score[0] >= self.objective:
+            return True,0
+        if self.score[1] >= self.objective:
+            return True,1
+        return False,None
 
     #input functions
     def input_value(self, valid_inputs = ['M']):
@@ -455,12 +461,12 @@ class Game():
         self.score[0] += self.actual_score[0]
         self.score[1] += self.actual_score[1]
         txt = (len(self.bot.name)-2)*' '+'vs'
-        
+        cls()
         print('#'* self.center)
         print(f'{txt} - {self.bot.name}'.center(self.center))
         print(f'{self.score[0]:02d} - {self.score[1]:02d}'.center(self.center))
         print('#'* self.center)
-        sleep(self.time)
+        sleep(self.time*2)
 
     def print_card(self, cards = [], card = None):
         if card:
