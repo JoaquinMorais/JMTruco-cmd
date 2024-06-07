@@ -19,6 +19,179 @@ class Bot():
                 score_envido=bot_init.score_envido or randint(23,27)
             )
         )
+        self.phrases:dict = bot_init.phrases or {
+            "Truco": [
+                [
+                "No seas un cuatro de copas y aceptame un",
+                "¡Truco!"
+                ],
+                "¡Truco!",
+                "¿Te animás al Truco? Vamos a ver qué tenés.",
+                [
+                    "El Truco está en jugar bien tus cartas,",
+                    "¡a ver si te animás!"
+                ],
+                "¡A ver qué tenés ahí, eh! ¡Truco, loco!",
+                [
+                    "Ahora sí que se pone picante esto",
+                    "¡Truco!"
+                ],
+                [
+                    'Tengo apuro por ganar',
+                    "y no quiero padecer",
+                    'Truco te voy a cantar',
+                    'Para poderte vencer',
+                ],
+                [
+                    "Truco...",
+                    "este eh...",
+                    "...",
+                    "Bueno, ¡Digo Truco!"
+                ],
+            ],
+            "Retruco": [
+                [
+                    "No te achiques",
+                    '¡Retruco!'
+                ],
+                [
+                    "¡Naah, eso no me asusta!",
+                    "¡Retruco, dale!"
+                ],
+                '¡Retruco!',
+                "¿Queres Retruco? Asi se pone interesante",
+                "El Retruco es para valientes, ¿te la jugás?",
+                "Amargo y Retruco"
+            ],
+            "Vale Cuatro": [
+                [
+                    "¡Vale cuatro!",
+                    "Este es el momento de jugársela toda."
+                ],
+                [
+                    "Todo o nada...",
+                    "Vale Cuatro!"
+                    "¿te animás?",
+                ],
+                "El Vale Cuatro es para los que no tienen miedo, cagon",
+                "¡Vale Cuatro!"
+            ],
+            "Envido": [
+                [
+                    "Cuando vine de La Isla",
+                    "encontre un lazo retorcido",
+                    "con él enlacé dos cartas",
+                    "y con dos le digo Envido"
+
+                ],
+                [
+                   "La mejor mano gana",
+                   "¡Envido!",
+                ],
+                "¡Envido!",
+                "El envido se gana con buen puntaje, ¿cuánto tenés?",
+                [
+                    "A este humano reprimido",
+                    "le voy a cantar el Envido",
+                ],
+                [
+                    "Aunque yo tenga pintade computadora",
+                    "hay un enano aqui metido",
+                    "que me esta' dele soplar",
+                    "Dale que tenes Envido"
+                ],
+            ],
+            "Real Envido": [
+                "¡Real envido!",
+                [
+                   " Con su boquita de grana",
+                    "y su pelo renegrido",
+                    "no envidia a la mañana",
+                    "este hermoso Real envido"
+                ],
+                "Dos Reales Envido por favor",
+                "La apuesta sube... ¡Real envido! ",
+                "Real envido, vamos a ver quién tiene más.",
+                "El real Envido es para subi",
+                [
+                    "A este humano reprimido",
+                    'lo asusto con Dos Reales Envido',
+                ],
+            ],
+            "Falta Envido": [
+                "¡Falta envido! Acá se define todo, ¿te animás?",
+                [   
+                    "Estas cansado?",
+                    "Estas molido?",
+                    "Entonces refrescate con dos Reales Envido"
+                ],
+                [
+                    "Pido gancho",
+                    "gancho pido",
+                    "Chupate esta",
+                    "Falta Envido!"
+                ],
+                [
+                    "Che, humano",
+                    "no sea tan altivo",
+                    "que yo lo desafio",
+                    "con una Falta Envido"
+                ],
+                "Falta envido, todo o nada, ¿qué decís?",
+                "El falta envido define el juego, ¡a ver qué tenés!"
+            ],
+            "Quiero": [
+                "Quiero, a ver que tengo chances",
+                [
+                    "¡Sí, acepto el desafío!",
+                    "Quiero"
+                ],
+                "Quiero, vamos a ver qué pasa",
+                [
+                    "Mmmm",
+                    "No se...",
+                    "¡Quiero!"
+                ]
+            ],
+            "No Quiero": [
+                "No Quiero, mejor me guardo",
+                "No Quiero, no me siento seguro",
+                "No Quiero...",
+                [
+                    "Mmmm",
+                    "No se...",
+                    "No Quiero"
+                ],
+                [
+                    "Hay veces que hay que querer",
+                    "otras veces duplicar",
+                    "pero hoy voy a rechazar",
+                    "No Quiero"
+                ]
+            ],
+            "Victoria":[
+                [
+                    "¡Vamos carajo!",
+                    f"Nadie confiaba en {self.name}"
+                ],
+                [
+                    "¡Sí, papá!",
+                    'Siiiii'
+                ],
+                "Ez",
+                "¿Donde se le sube la dificultad?",
+                [
+                    "Muchachos!!!",
+                    "Ahora nos volvimo' a ilusionar!"
+                ]
+            ],
+            "Derrota":[
+                "Gg no team",
+                "¡No pegue una, loco!",
+                "Robo Robo!!!",
+                "Derrota que duele en el alma..."
+            ]
+        }
     def __str__(self) -> str:
         return f'nombre: {self.name}, stats: ({self.stats})'
     

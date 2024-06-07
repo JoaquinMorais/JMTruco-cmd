@@ -13,6 +13,7 @@ class BotBase(BaseModel):
 
 class BotInit(StatsInit):
     name: Optional[str] = None
+    phrases: Optional[dict] = None
 
 
     

@@ -1,4 +1,4 @@
-from random import randint
+from random import randint,choice
 from time import sleep
 #models
 from JMTrucoCmd.models.card import Card
@@ -12,7 +12,7 @@ from JMTrucoCmd.functions.deck import get_deck, get_cards, calculate_win, calcul
 from JMTrucoCmd.functions.sistem import print_slow, cls
 
 class Game():
-    def __init__(self, center= 29, time = 1, objective = 30) -> None:
+    def __init__(self, center= 49, time = 1, objective = 30) -> None:
         self.time = time
         self.objective = objective
         self.bot:Bot = None
@@ -59,10 +59,11 @@ class Game():
         else:
             self.start_pc = True
         win_match = False
-
+        #self.print_intro_truco(time=1)
         cls()
         print_slow('Empieza la partida de truco')
         
+        #self.print_phrase(bot.phrases['Truco'])
         self.print_score()
         while not win_match:
             self.start_round()
@@ -106,7 +107,7 @@ class Game():
                     
             if self.play_pc:
                 print('cartas disponibles'.center( self.center))
-                self.print_card(cards = self.cards[0]) 
+                self.print_card(cards = self.cards[0],center_left=False) 
                 sleep(self.time)
                 card_pc,envido,truco = self.bot.play_round(round=round,cards=self.cards[1],cards_played=self.cards_played,envido=self.envido,truco=self.truco,quiero_pc=self.quiero_pc)
                 if card_pc:
@@ -123,7 +124,7 @@ class Game():
             else:
                 self.play_player()
             
-            response = self.check_round(round)
+            self.check_round(round)
             
             win_match,winner = self.win_match(summing_actual_points = True)
             if win_match:
@@ -131,8 +132,11 @@ class Game():
         
         cls()
         self.print_played_cards()
-        print_slow(response.upper())
-        sleep(self.time)
+        if self.win_pc == True:
+            print_slow(f'{self.bot.name} Gano la ronda')
+        else:
+            print_slow(f'Ganaste la ronda')
+        sleep(self.time*2)
         if self.win_pc is False:
             self.actual_score[0] += self.truco
         elif self.win_pc is True:
@@ -142,9 +146,8 @@ class Game():
     def play_player(self, only_cards = False):
         player_cards = self.cards[0]
         valid_inputs = []
-        
         print('cartas disponibles'.center( self.center))
-        self.print_card(cards = player_cards) 
+        self.print_card(cards = player_cards,center_left=False) 
         
         if only_cards==False:
             txt = ''
@@ -172,11 +175,11 @@ class Game():
                     sleep(self.time) 
                     responses_bot = self.bot.respond_envido(self.all_cards[1],at_least=value)
                     if responses_bot == 0:
-                        print_slow(f'{self.bot}: No quiero...')
+                        self.print_phrase(self.bot.phrases['No Quiero'])
                         self.actual_score[0] = max(self.score_envido,1)
                         self.envido = 0
                     elif responses_bot == value:
-                        print_slow(f'{self.bot}: Quiero...')
+                        self.print_phrase(self.bot.phrases['Quiero'])
                         self.envido = value
                         self.score_envido += self.envido_option_points[value]
                         self.calculate_envido()
@@ -187,7 +190,7 @@ class Game():
 
             elif value == 'T' and self.truco!=4:
                     print_slow(f'Le canto {self.truco_options[self.truco+1]} amigo')
-                    responses_bot = self.bot.respond_truco(self.cards[1],self.cards_played,self.truco)
+                    responses_bot = self.bot.respond_truco(self.cards[1],self.cards_played,self.truco+1)
                     sleep(self.time)
                     if responses_bot == True:
                         self.truco += 1
@@ -195,20 +198,21 @@ class Game():
                     elif responses_bot == False:
                         self.truco += 1
                         self.quiero_pc = True
-                        print_slow(f'{self.bot.name}: Quiero')       
+                        self.print_phrase(self.bot.phrases['Quiero'])       
                     else:
                         self.win_pc = False
                         self.end_round = True
-                        print_slow(f'{self.bot.name}: NO QUIERO NADA')
+                        self.print_phrase(self.bot.phrases['No Quiero'])
                     sleep(self.time*2.5)
 
     def respond_envido(self, envido):
-        print_slow(f'{self.bot.name}: {self.envido_options[envido]}')
+        self.print_phrase(self.bot.phrases[self.envido_options[envido]])
         valid_inputs = self.envido_call(refuse=False,at_least=envido+1)
         value = self.input_value(valid_inputs=valid_inputs)
         
         if value == 'N':
             print_slow(f'Jugador: No quiero...')
+            sleep(self.time)
             self.actual_score[1] = max(self.score_envido,1)
             self.envido = 0
         elif value == 'Q':
@@ -224,11 +228,11 @@ class Game():
             sleep(self.time) 
             responses_bot = self.bot.respond_envido(self.all_cards[1],at_least=value)
             if responses_bot == 0:
-                print_slow(f'{self.bot}: No quiero...')
+                self.print_phrase(self.bot.phrases['No Quiero'])
                 self.actual_score[0] = max(self.score_envido,1)
                 self.envido = 0
             elif responses_bot == value:
-                print_slow(f'{self.bot}: Quiero...')
+                self.print_phrase(self.bot.phrases['Quiero'])
                 self.envido = value
                 self.score_envido += self.envido_option_points[value]
                 self.calculate_envido()
@@ -240,13 +244,13 @@ class Game():
     def respond_truco(self, bot_call = False):
         if bot_call:
             self.truco += 1
-            print_slow(f'{self.bot.name}: {self.truco_options[self.truco].capitalize()}!!!')
+            self.print_phrase(self.bot.phrases[self.truco_options[self.truco]])
         else:
             try:
-                print_slow(f'{self.bot.name}: {self.truco_options[self.truco+1].upper()}!!')
+                self.print_phrase(self.bot.phrases[self.truco_options[self.truco+1]])
                 self.truco += 1
             except:
-                print_slow(f'{self.bot.name}: {self.truco_options[self.truco].upper()}!!')
+                self.print_phrase(self.bot.phrases[self.truco_options[self.truco]])
             
         sleep(self.time*1.5)
         valid_inputs = self.truco_call(refuse=False)
@@ -269,66 +273,11 @@ class Game():
             elif responses_bot == False:
                 self.truco += 1
                 self.quiero_pc = True
-                print_slow(f'{self.bot.name}: Quiero')
+                self.print_phrase(self.bot.phrases['Quiero'])
             else:
                 self.win_pc = False
                 self.end_round = True
-                print_slow(f'{self.bot.name}: NO QUIERO NADA')
-            
-    def calculate_envido(self):
-        sleep(self.time)
-        cls()
-        print()
-        print('Envido:'.center( self.center))
-        print('--------------------'.center( self.center))
-        print(f'{self.bot.name}'.center( self.center))
-        #print_slow(f'{self.cards_envido[1]}'.center( self.center))
-        print()
-        print('--------------------'.center( self.center))
-        print(f'vs'.center( self.center))
-        #print(f'{self.cards_envido[0]}'.center( self.center))
-        print()
-        print('--------------------'.center( self.center))
-        print()
-        sleep(self.time*2)
-        cls()
-        print()
-        print('Envido:'.center( self.center))
-        print('--------------------'.center( self.center))
-        print(f'{self.bot.name}'.center( self.center))
-        print(f'{self.cards_envido[1]}'.center( self.center))
-        print('--------------------'.center( self.center))
-        print(f'vs'.center( self.center))
-        #print(f'{self.cards_envido[0]}'.center( self.center))
-        print()
-        print('--------------------'.center( self.center))
-        print()
-        sleep(self.time*1.5)
-        cls()
-        print()
-        print('Envido:'.center( self.center))
-        print('--------------------'.center( self.center))
-        print(f'{self.bot.name}'.center( self.center))
-        print(f'{self.cards_envido[1]}'.center( self.center))
-        print('--------------------'.center( self.center))
-        print(f'vs'.center( self.center))
-        print(f'{self.cards_envido[0]}'.center( self.center))
-        print('--------------------'.center( self.center))
-        print()
-        sleep(self.time*1.5)
-
-        if self.cards_envido[0] > self.cards_envido[1] or (self.cards_envido[0] == self.cards_envido[1] and self.start_pc == False) :
-            if self.envido == 4:
-                self.score_envido = self.objective-self.score[1]
-            self.actual_score[0] = self.score_envido
-            print_slow(f'Ganaste {self.score_envido} punto{"s" if self.score_envido!=1 else ""}!!')
-        else:
-            if self.envido == 4:
-                self.score_envido = self.objective-self.score[0]
-            self.actual_score[1] = self.score_envido
-            print_slow(f'Perdiste... {self.score_envido} punto{"s" if self.score_envido!=1 else ""}... :(')
-        self.envido = 0
-        sleep(self.time*2.5)       
+                self.print_phrase(self.bot.phrases['No Quiero'])
 
     #Options calls
     def options_call(self):
@@ -430,11 +379,8 @@ class Game():
                 self.end_round = True
         if winner == 0:
             self.win_pc = False
-            response = player_text
         elif winner == 1:
-            self.win_pc = True
-            response = pc_text  
-        return response
+            self.win_pc = True  
     
     def win_match(self, summing_actual_points = False):
         score = [self.score[0],self.score[1]]
@@ -471,13 +417,14 @@ class Game():
         print('#'* self.center)
         sleep(self.time*2)
 
-    def print_card(self, cards = [], card = None):
+    def print_card(self, cards = [], card = None, center_left = True):
         if card:
-            print('o-------o')
-            print(f'|{card.number:02d}  {card.type_card.emoji} |')
-            print(f'|  {card.type_card.abbrevation}  |')
-            print(f'|{card.type_card.emoji}   {card.number:02d}|')
-            print('o-------o')
+            extra = ' '*((self.center-len(frame))//2)
+            print(extra+'o-------o')
+            print(extra+f'|{card.number:02d}  {card.type_card.emoji} |')
+            print(extra+f'|  {card.type_card.abbrevation}  |')
+            print(extra+f'|{card.type_card.emoji}   {card.number:02d}|')
+            print(extra+'o-------o')
         else: 
             frame = 'o-------o '* len(cards)
             top = ''
@@ -487,11 +434,16 @@ class Game():
                 top += f'|{cards[i].number:02d}   {cards[i].type_card.emoji}| '
                 middle += f'|  {cards[i].type_card.abbrevation}  | '
                 bottom += f'|{cards[i].type_card.emoji}   {cards[i].number:02d}| '
-            print(frame)
-            print(top)
-            print(middle)
-            print(bottom)
-            print(frame)
+
+            if center_left:
+                extra = ' '*((self.center-30)//2)
+            else:
+                extra = ' '*((self.center-len(frame))//2)
+            print(extra+frame)
+            print(extra+top)
+            print(extra+middle)
+            print(extra+bottom)
+            print(extra+frame)
 
     def print_played_cards(self):
         print(f'Cartas Jugadas'.center( self.center))
@@ -511,3 +463,97 @@ class Game():
         print(f'win_match: {self.win_match()}')
         print(f'win_match(summing_actual_points=True): {self.win_match(summing_actual_points=True)}')
         sleep(self.time*10)
+    
+    def print_intro_truco(self,print_dimensions:bool = True, time:int = 5):
+        cls()
+
+        if print_dimensions:
+            print('DIMENSIONES RECOMENDADAS'.center(self.center))
+            txt_horizontal = '1'
+            for i in range(self.center-2):
+                txt_horizontal+='-'
+            txt_horizontal+=f'{self.center}'
+            print_slow(txt_horizontal)
+            for i in range(1,34):
+                print_slow('|')
+            print_slow('35')
+            sleep(self.time*time)
+        cls()
+        print('+------------------------------------------+'.center(self.center))
+        print('|                                          |'.center(self.center))
+        print('| ######  ######  ##   ##   ####    ####   |'.center(self.center))
+        print('|   ##    ##   ## ##   ##  ##     ##    ## |'.center(self.center))
+        print('|   ##    ######  ##   ##  ##     ##    ## |'.center(self.center))
+        print('|   ##    ##  ##  ##   ##  ##     ##    ## |'.center(self.center))
+        print('|   ##    ##   ##  #####    ####    ####   |'.center(self.center))
+        print('|                                          |'.center(self.center))
+        print('+------------------------------------------+'.center(self.center))
+        
+        sleep(self.time*time)
+    
+    def print_phrase(self,phrases):
+        phrase = choice(phrases)
+        if type(phrase) == str:
+            print_slow(f'{self.bot.name}: {phrase}')
+
+        else:
+            cont = 0
+            len_phrase = len(phrase)
+            for i in phrase:
+                print_slow(f'{self.bot.name}: {i}')
+                cont+=1
+                if cont!=len_phrase:
+                    sleep(self.time)
+            
+    def calculate_envido(self):
+        sleep(self.time)
+        cls()
+        print()
+        print('Envido:'.center( self.center))
+        print('--------------------'.center( self.center))
+        print(f'{self.bot.name}'.center( self.center))
+        print()
+        print('--------------------'.center( self.center))
+        print(f'vs'.center( self.center))
+        print()
+        print('--------------------'.center( self.center))
+        print()
+        sleep(self.time*2)
+        cls()
+        print()
+        print('Envido:'.center( self.center))
+        print('--------------------'.center( self.center))
+        print(f'{self.bot.name}'.center( self.center))
+        #print(f'{self.cards_envido[1]}'.center( self.center))
+        print()
+        print('--------------------'.center( self.center))
+        print(f'vs'.center( self.center))
+        print(f'{self.cards_envido[0]}'.center( self.center))
+        print('--------------------'.center( self.center))
+        print()
+        sleep(self.time*1.5)
+        cls()
+        print()
+        print('Envido:'.center( self.center))
+        print('--------------------'.center( self.center))
+        print(f'{self.bot.name}'.center( self.center))
+        print(f'{self.cards_envido[1]}'.center( self.center))
+        print('--------------------'.center( self.center))
+        print(f'vs'.center( self.center))
+        print(f'{self.cards_envido[0]}'.center( self.center))
+        print('--------------------'.center( self.center))
+        print()
+        sleep(self.time*1.5)
+
+        if self.cards_envido[0] > self.cards_envido[1] or (self.cards_envido[0] == self.cards_envido[1] and self.start_pc == False) :
+            if self.envido == 4:
+                self.score_envido = self.objective-self.score[1]
+            self.actual_score[0] = self.score_envido
+            print_slow(f'Ganaste {self.score_envido} punto{"s" if self.score_envido!=1 else ""}!!')
+        else:
+            if self.envido == 4:
+                self.score_envido = self.objective-self.score[0]
+            self.actual_score[1] = self.score_envido
+            print_slow(f'Perdiste... {self.score_envido} punto{"s" if self.score_envido!=1 else ""}... :(')
+        self.envido = 0
+        sleep(self.time*2.5)       
