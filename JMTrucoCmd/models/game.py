@@ -10,6 +10,7 @@ from JMTrucoCmd.schemas.bot import BotInit
 #functions
 from JMTrucoCmd.functions.deck import get_deck, get_cards, calculate_win, calculate_envido
 from JMTrucoCmd.functions.sistem import print_slow, cls
+from JMTrucoCmd.functions.bots import get_bots
 
 class Game():
     def __init__(self, center= 49, time = 1, objective = 30) -> None:
@@ -50,7 +51,7 @@ class Game():
             4: 0
         }
 
-    def start(self, bot:Bot = Bot(BotInit(name='robocop'))):
+    def start(self, bot:Bot = Bot(BotInit(name='robocop',aggressive=8))):
         self.bot = bot
         self.score = [0,0]
         self.actual_score = [0,0]

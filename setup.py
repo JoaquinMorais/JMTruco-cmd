@@ -5,7 +5,7 @@ readme = open("./README.md","r")
 setuptools.setup(
     name='JMTrucoCmd',
     packages=['JMTrucoCmd','JMTrucoCmd.models','JMTrucoCmd.schemas','JMTrucoCmd.functions'], # Mismo nombre que en la estructura de carpetas de arriba
-    version='0.7',
+    version='0.7.1',
     license='MIT', # La licencia que tenga tu paquete
     description='Esta es la descripcion del truco',
     long_description=readme.read(),
@@ -13,7 +13,7 @@ setuptools.setup(
     author='Joaquin Morais',
     author_email='joaquinmoraislussary@gmail.com',
     url='https://github.com/JoaquinMorais/JMTrucoCmd', # Usa la URL del repositorio de GitHub
-    download_url='https://github.com/JoaquinMorais/JMTrucoCmd/tarball/v0.7', # Te lo explico a continuación
+    download_url='https://github.com/JoaquinMorais/JMTrucoCmd/tarball/v0.7.1', # Te lo explico a continuación
     keywords=['testing','logging','example'], # Palabras que definan tu paquete
     classifiers=[
         "Programming Language :: Python :: 3",

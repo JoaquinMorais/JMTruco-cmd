@@ -95,10 +95,10 @@ class Bot():
                     "le voy a cantar el Envido",
                 ],
                 [
-                    "Aunque yo tenga pintade computadora",
+                    "Aunque yo tenga pinta de computadora",
                     "hay un enano aqui metido",
                     "que me esta' dele soplar",
-                    "Dale que tenes Envido"
+                    '"Dale boludo, que tenes Envido"'
                 ],
             ],
             "Real Envido": [
@@ -109,13 +109,13 @@ class Bot():
                     "no envidia a la mañana",
                     "este hermoso Real envido"
                 ],
-                "Dos Reales Envido por favor",
+                "Un Real Envido por favor",
                 "La apuesta sube... ¡Real envido! ",
                 "Real envido, vamos a ver quién tiene más.",
-                "El real Envido es para subi",
+                "El Real Envido es para subirle?",
                 [
                     "A este humano reprimido",
-                    'lo asusto con Dos Reales Envido',
+                    'lo asusto con un Real Envido',
                 ],
             ],
             "Falta Envido": [
