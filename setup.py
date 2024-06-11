@@ -4,7 +4,7 @@ readme = open("./README.md","r")
 
 setuptools.setup(
     name='JMTrucoCmd',
-    packages=['JMTrucoCmd','JMTrucoCmd.models','JMTrucoCmd.schemas','JMTrucoCmd.functions'], # Mismo nombre que en la estructura de carpetas de arriba
+    packages=['JMTrucoCmd','JMTrucoCmd.models','JMTrucoCmd.schemas','JMTrucoCmd.functions','JmTrucoCmd.data'], # Mismo nombre que en la estructura de carpetas de arriba
     version='0.7.1',
     license='MIT', # La licencia que tenga tu paquete
     description='Esta es la descripcion del truco',

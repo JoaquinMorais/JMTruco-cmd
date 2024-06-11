@@ -51,7 +51,26 @@ class Game():
             4: 0
         }
 
-    def start(self, bot:Bot = Bot(BotInit(name='robocop',aggressive=8))):
+    def start(self, ):
+        cls()
+        self.print_intro_truco(time=2)
+        end = False
+        while not end:
+            cls()
+            self.print_intro_truco(time=2,print_dimensions=False)
+            valid_inputs = self.print_menu()
+            value = self.input_value(valid_inputs=valid_inputs)
+            if value == '1':
+                self.start_match()
+            elif value == 'S':
+                end=True
+            sleep(self.time)
+        print_slow('Cerrando truco...')
+        sleep(0.5)
+        
+        
+
+    def start_match(self,bot:Bot = Bot(BotInit(name='fercho'))):
         self.bot = bot
         self.score = [0,0]
         self.actual_score = [0,0]
@@ -59,18 +78,23 @@ class Game():
             self.start_pc = False
         else:
             self.start_pc = True
-        win_match = False
-        #self.print_intro_truco(time=1)
-        cls()
-        print_slow('Empieza la partida de truco')
         
-        #self.print_phrase(bot.phrases['Truco'])
+        print_slow('Empieza la partida de truco')
+        sleep(self.time)
         self.print_score()
+        win_match = False
         while not win_match:
             self.start_round()
             self.start_pc = not self.start_pc
             win_match,winner = self.win_match()
-        print(f'{winner} gano!!!!')
+
+        if winner == 0:
+            self.print_phrase(self.bot.phrases['Derrota'])
+        else:
+            self.print_phrase(self.bot.phrases['Victoria'])
+        
+        sleep(self.time*2)
+        
 
     def start_round(self):
         self.actual_score:list[int] = [0,0] #0:gamer, 1:computer
@@ -111,7 +135,7 @@ class Game():
                 self.print_card(cards = self.cards[0],center_left=False) 
                 sleep(self.time)
                 card_pc,envido,truco = self.bot.play_round(round=round,cards=self.cards[1],cards_played=self.cards_played,envido=self.envido,truco=self.truco,quiero_pc=self.quiero_pc)
-                if card_pc:
+                if card_pc is not None:
                     self.cards_played['pc'].append(card_pc)
                     self.cards[1].remove(card_pc)
                     self.play_pc = not self.play_pc
@@ -344,10 +368,7 @@ class Game():
     #responses
     def check_round(self,round):
         win_rounds,none = calculate_win(self.cards_played)
-        response = ''
         winner = None
-        player_text = f'has ganado la ronda!'
-        pc_text = f'{self.bot.name} gano la rona...'
         if win_rounds['pc'] == win_rounds['player'] == win_rounds['draw'] == 1:
             if self.cards_played['pc'][0].value > self.cards_played['player'][0].value:
                 winner = 1
@@ -467,7 +488,6 @@ class Game():
     
     def print_intro_truco(self,print_dimensions:bool = True, time:int = 5):
         cls()
-
         if print_dimensions:
             print('DIMENSIONES RECOMENDADAS'.center(self.center))
             txt_horizontal = '1'
@@ -489,8 +509,8 @@ class Game():
         print('|   ##    ##   ##  #####    ####    ####   |'.center(self.center))
         print('|                                          |'.center(self.center))
         print('+------------------------------------------+'.center(self.center))
-        
-        sleep(self.time*time)
+        if print_dimensions:
+            sleep(self.time*time)
     
     def print_phrase(self,phrases):
         phrase = choice(phrases)
@@ -558,3 +578,10 @@ class Game():
             print_slow(f'Perdiste... {self.score_envido} punto{"s" if self.score_envido!=1 else ""}... :(')
         self.envido = 0
         sleep(self.time*2.5)       
+
+    def print_menu(self):
+        print('1: Empezar partida rapida')
+        print('2: Partida Personalizada')
+        print('C: Configuracion')
+        print('S: Salir')
+        return ['1','2','C','S']

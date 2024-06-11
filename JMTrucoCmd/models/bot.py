@@ -9,7 +9,7 @@ from JMTrucoCmd.functions.deck import calculate_envido,calculate_truco, calculat
 
 class Bot():
     def __init__(self,bot_init:BotInit) -> None:
-        self.name:str = (bot_init.name or 'Pc').capitalize()
+        self.name:str = (bot_init.name or 'Pc').title()
         self.stats:Stats = Stats(
             StatsInit(
                 aggressive=bot_init.aggressive or randint(1,10),
@@ -104,7 +104,7 @@ class Bot():
             "Real Envido": [
                 "¡Real envido!",
                 [
-                   " Con su boquita de grana",
+                   "Con su boquita de grana",
                     "y su pelo renegrido",
                     "no envidia a la mañana",
                     "este hermoso Real envido"
