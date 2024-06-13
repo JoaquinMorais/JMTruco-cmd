@@ -15,6 +15,7 @@ from JMTrucoCmd.functions.bots import get_bots
 class Game():
     def __init__(self, center= 49, time = 1, objective = 30) -> None:
         self.time = time
+        self.bots = get_bots()
         self.objective = objective
         self.bot:Bot = None
         self.start_pc = True
@@ -62,6 +63,12 @@ class Game():
             value = self.input_value(valid_inputs=valid_inputs)
             if value == '1':
                 self.start_match()
+            elif value == '2':
+                self.start_match(bot=choice(self.bots))
+            elif value == '3':
+                valid_inputs = self.print_bots()
+                value = self.input_value(valid_inputs=valid_inputs)
+                self.start_match(bot=self.bots[int(value)-1])
             elif value == 'S':
                 end=True
             sleep(self.time)
@@ -580,8 +587,21 @@ class Game():
         sleep(self.time*2.5)       
 
     def print_menu(self):
-        print('1: Empezar partida rapida')
-        print('2: Partida Personalizada')
+        print('1: Partida Rapida')
+        print('2: Partida Random')
+        print('3: Partida Personalizada')
         print('C: Configuracion')
         print('S: Salir')
-        return ['1','2','C','S']
+        return ['1','2','3','C','S']
+    
+    def print_bots(self):
+        cont = 0
+        valid_inputs = []
+        for bot in self.bots:
+            cont+=1
+            print(f'{cont}: {bot.name} {bot.stats}')
+            valid_inputs.append(str(cont))
+        return valid_inputs
+
+
+    

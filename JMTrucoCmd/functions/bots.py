@@ -6,8 +6,8 @@ from JMTrucoCmd.schemas.bot import BotInit
 from JMTrucoCmd.data.bots import bots_data
 
 def get_bots(name=None):
-    name = name.title()
     if name:
+        name = name.title()
         return Bot(bots_data[name])
     bots = []
     for i in bots_data:

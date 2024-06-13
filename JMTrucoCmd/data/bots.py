@@ -257,6 +257,7 @@ bots_data = {
         }
     ),
     'Gato':BotInit(
+        name='Cat',
         aggressive=4,
         liar=4,
         fisherman=10,
